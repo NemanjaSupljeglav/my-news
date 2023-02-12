@@ -1,0 +1,35 @@
+.wrapperSearch {
+  background: #ffffff;
+  box-shadow: 0px 1px 2px -1px #c8cad1;
+  border-radius: 10px;
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  max-width: 725px;
+}
+.buttonSearch {
+  background: #bb1e1e;
+  border-radius: 6px;
+  color: white;
+  padding: 10px;
+  border: none;
+  cursor: pointer;
+  margin-right: 10px;
+}
+.textInput {
+  border: none;
+  outline: none;
+  height: 40px;
+  width: 100%;
+  margin-left: 10px;
+}
+.iconSearch {
+  margin-left: 10px;
+}
+@media only screen and (max-width: 450px) {
+  .buttonSearch {
+    display: none;
+  }
+}
