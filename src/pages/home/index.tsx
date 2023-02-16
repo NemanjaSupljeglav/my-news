@@ -29,6 +29,7 @@ interface newsData {
   byline: {
     original: string;
   };
+  favorite: boolean;
 }
 
 interface latestData {
@@ -53,7 +54,8 @@ function Home() {
   const [screenWidth, setScreenWidth] = useState<number>(window.innerWidth);
   const [news, setNews] = useState<newsData[]>([]);
   const [latestNews, setLatestNews] = useState<latestData[]>([]);
-  const [scrollMax, setScrollMax] = useState<number>(20);
+  const [scrollMax, setScrollMax] = useState<number>(40);
+
   const divRef = useRef<HTMLDivElement>(null);
 
   //Handlers
@@ -74,6 +76,7 @@ function Home() {
   };
   const handleNews = data => {
     setNews(data?.response?.docs);
+    console.log(data?.response?.docs, "starta");
   };
   const handleLatestNews = data => {
     setLatestNews([...latestNews, ...data?.results]);
@@ -110,13 +113,17 @@ function Home() {
   window.addEventListener("resize", function () {
     setScreenWidth(window.innerWidth);
   });
+
   useEffect(() => {
     const handleScroll = () => {
       if (!divRef.current) {
         return;
       }
       const element = divRef.current;
-      if (element.scrollTop + element.offsetHeight >= element.scrollHeight) {
+      if (
+        element.scrollTop + element.offsetHeight >=
+        element.scrollHeight - 60
+      ) {
         setScrollMax(pri => pri + 20);
         console.log(scrollMax);
       }
@@ -129,6 +136,15 @@ function Home() {
     };
   }, [divRef]);
 
+  const handleAddFavorites = data => {
+    const newsData = news?.map(item => {
+      if (item?.headline?.main === data)
+        return { ...item, favorite: !item?.favorite };
+
+      return { ...item, favorite: item?.favorite };
+    });
+    setNews(newsData);
+  };
   return (
     <div className="homeWrapper">
       <Banner />
@@ -218,10 +234,20 @@ function Home() {
                         className="postPic"
                       />
                       <div className="titleWrapper">
+                        <img
+                          src={`/assets/icons/${
+                            item?.favorite ? "fullStar" : "star"
+                          }.png`}
+                          alt="Icon"
+                          className="iconFav"
+                          onClick={() =>
+                            handleAddFavorites(item?.headline?.main)
+                          }
+                        />
                         <div className="typeTitle">{item?.section_name}</div>
                         <div className="postTitle">{item?.headline?.main}</div>
-                        <div className="journalistName  ">
-                          {item?.byline?.original}
+                        <div className="journalistName">
+                          {item?.byline?.original?.slice(0, 50)}
                         </div>
                       </div>
                     </div>
@@ -236,8 +262,8 @@ function Home() {
                     <div className="newsTitle">Latest news</div>
                   </div>
                   <div className="scrollNewsWrapper" ref={divRef}>
-                    {latestNews?.map(item => (
-                      <div className="oneNews">
+                    {latestNews?.map((item, index) => (
+                      <div className="oneNews" key={index}>
                         <div className="time">
                           {moment(item?.published_date).format("LT")}
                         </div>
@@ -252,6 +278,19 @@ function Home() {
           </div>
         )}
       </div>
+      {news?.filter(item => item?.favorite).length > 0 && (
+        <div className="favoritesWrapper">
+          <div className="favoritesNum">
+            {news?.filter(item => item?.favorite)?.length}
+          </div>
+          <img
+            src="/assets/icons/folder.png"
+            alt="Icon"
+            className="favoritesFolder"
+            onClick={handleOpenCategory}
+          />
+        </div>
+      )}
     </div>
   );
 }

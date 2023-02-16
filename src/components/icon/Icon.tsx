@@ -22,5 +22,10 @@ const Icon: React.FC<Props> = ({
     </div>
   );
 };
-
+Icon.defaultProps = {
+  classNameIcon: "",
+  classNameTitle: "",
+  className: "",
+  title: "icon"
+};
 export default Icon;

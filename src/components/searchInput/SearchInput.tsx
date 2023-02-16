@@ -38,4 +38,9 @@ const SearchImput: React.FC<Props> = ({
   );
 };
 
+SearchImput.defaultProps = {
+  label: "Label",
+  placehoder: "Search",
+  onClick: () => console.log("clicked")
+};
 export default SearchImput;

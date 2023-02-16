@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_KEY = "";
+const API_KEY = "OSBA9mpPTupnAJ5OvdFjKGtrEhkGN4X0";
 const API_URL = `https://api.nytimes.com`;
 
 export const getFunc = async (url, handleData) => {
