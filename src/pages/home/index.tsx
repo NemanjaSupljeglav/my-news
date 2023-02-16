@@ -122,7 +122,7 @@ function Home() {
       const element = divRef.current;
       if (
         element.scrollTop + element.offsetHeight >=
-        element.scrollHeight - 60
+        element.scrollHeight - 120
       ) {
         setScrollMax(pri => pri + 20);
         console.log(scrollMax);
